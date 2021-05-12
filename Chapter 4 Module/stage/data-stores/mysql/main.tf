@@ -1,5 +1,5 @@
-provider "aws"{
-    region= "us-east-1"
+provider "aws" {
+  region = "us-east-1"
 }
 
 resource "aws_db_instance" "example"{
@@ -19,4 +19,13 @@ terraform {
     encrypt = true
 #    dynamodb_table = "(생성한 DynamoDB 테이블 이름)"
   }
+}
+
+module "webserver_cluster" {
+  source = "../../../modules/services/webserver-cluster"
+
+  cluster_name = "webservers-prod"
+  db_remote_state_bucket = "tf-start-stage"
+  db_remote_state_key = "prod/data-stores/mysql/terrform.tfstate"
+  
 }
